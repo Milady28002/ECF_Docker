@@ -1,0 +1,69 @@
+services:
+  database:
+    image: mariadb:10.11
+    container_name: ecf_database
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ecf_vite_gourmand
+      MARIADB_USER: ecf_user
+      MARIADB_PASSWORD: ecfPassword123!
+      MARIADB_ROOT_PASSWORD: rootPassword123!
+    ports:
+      - "3307:3306"
+    volumes:
+      - database_data:/var/lib/mysql
+
+  mongodb:
+    image: mongo:7
+    container_name: ecf_mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ecf_mailhog
+    restart: unless-stopped
+    ports:
+      - "1026:1025"
+      - "8026:8025"
+
+  backend:
+    build:
+      context: ../ECF_BackEnd_API
+      dockerfile: Dockerfile
+    container_name: ecf_backend
+    restart: unless-stopped
+    volumes:
+      - ../ECF_BackEnd_API:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+      - mongodb
+      - mailhog
+    environment:
+      DATABASE_URL: "mysql://ecf_user:ecfPassword123!@database:3306/ecf_vite_gourmand?serverVersion=10.11"
+      MONGODB_URL: "mongodb://mongodb:27017"
+      MAILER_DSN: "smtp://mailhog:1025"
+
+  frontend:
+    build:
+      context: ../ECF_FrontEnd
+      dockerfile: Dockerfile
+    container_name: ecf_frontend
+    restart: unless-stopped
+    volumes:
+      - ../ECF_FrontEnd:/app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+
+volumes:
+  database_data:
+  mongodb_data:
+
+  

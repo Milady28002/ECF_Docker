@@ -12,6 +12,7 @@ services:
       - "3307:3306"
     volumes:
       - database_data:/var/lib/mysql
+      - ../ECF_BackEnd_API/database/scripts_sql:/docker-entrypoint-initdb.d
 
   mongodb:
     image: mongo:7

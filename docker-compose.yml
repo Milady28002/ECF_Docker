@@ -12,7 +12,7 @@ services:
       - "3307:3306"
     volumes:
       - database_data:/var/lib/mysql
-      - ../ECF_BackEnd_API/database/scripts_sql:/docker-entrypoint-initdb.d
+      - ../ECF_BackEnd_API/database_mb:/docker-entrypoint-initdb.d
 
   mongodb:
     image: mongo:7
@@ -39,6 +39,7 @@ services:
     restart: unless-stopped
     volumes:
       - ../ECF_BackEnd_API:/var/www/html
+      - /var/www/html/vendor
     ports:
       - "8000:8000"
     depends_on:

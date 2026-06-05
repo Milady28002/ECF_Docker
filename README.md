@@ -1,14 +1,14 @@
 # Vite & Gourmand - Environnement Docker
 
-## Description
+## Architecture
 
 Ce repository contient la configuration Docker permettant de lancer l’application Vite & Gourmand en local avec tous ses services :
 
-Frontend
-Backend Symfony
-MariaDB
-MongoDB
-Mailhog
+- Frontend : application JavaScript SPA
+- Backend : API Symfony
+- MariaDB : données relationnelles
+- MongoDB : statistiques
+- Mailhog : tests d'envoi d'emails
 
 Cet environnement permet de reproduire le projet de manière isolée et cohérente sur n’importe quelle machine.
 
